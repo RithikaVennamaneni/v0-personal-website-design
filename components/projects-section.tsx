@@ -79,9 +79,7 @@ export function ProjectsSection() {
                   ))}
                 </div>
 
-                <Button variant="outline" size="sm" className="w-full bg-transparent">
-                  View Project
-                </Button>
+              
               </div>
             </Card>
           ))}
