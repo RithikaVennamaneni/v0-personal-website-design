@@ -16,18 +16,46 @@ export function ContactSection() {
     email: "",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
 
-    // Mock form submission
-    toast({
-      title: "Message sent!",
-      description: "Thank you for your message. I'll get back to you soon.",
-    })
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
 
-    setFormData({ name: "", email: "", message: "" })
+      if (response.ok) {
+        toast({
+          title: "Message sent!",
+          description: "Thank you for your message. I'll get back to you soon.",
+        })
+        setFormData({ name: "", email: "", message: "" })
+      } else {
+        const errorData = await response.json()
+        toast({
+          title: "Error sending message",
+          description: errorData.error || "Please try again later.",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error("Form submission error:", error)
+      toast({
+        title: "Error sending message",
+        description: "Please try again later.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -62,6 +90,7 @@ export function ContactSection() {
                   value={formData.name}
                   onChange={handleChange}
                   className="bg-background border-border"
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -77,6 +106,7 @@ export function ContactSection() {
                   value={formData.email}
                   onChange={handleChange}
                   className="bg-background border-border"
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -92,11 +122,16 @@ export function ContactSection() {
                   value={formData.message}
                   onChange={handleChange}
                   className="bg-background border-border resize-none"
+                  disabled={isSubmitting}
                 />
               </div>
 
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                Send Message
+              <Button
+                type="submit"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </Card>
