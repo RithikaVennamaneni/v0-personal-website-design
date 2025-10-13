@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 
 const projects = [
   {
@@ -38,6 +37,13 @@ const projects = [
     description: "Evolving Paradigms: Agile Methodologies' Triumph over Waterfall in Modern Business Practices.",
     image: "/agile-methodology-research-paper.jpg",
     tags: ["Research", "Agile", "Business Process", "Academic"],
+  },
+  {
+    title: "AI-Powered Incident Logging Assistant (Autism Support Tool)",
+    description:
+      "Developed a prototype using voice-to-text, auto-summaries, and AI tagging to help educators document and analyze behavioral incidents for children with autism.",
+    image: "/ai-incident-logging-autism-support.jpg",
+    tags: ["AI", "Voice-to-Text", "Education", "Healthcare", "Accessibility"],
   },
 ]
 
@@ -78,8 +84,6 @@ export function ProjectsSection() {
                     </span>
                   ))}
                 </div>
-
-              
               </div>
             </Card>
           ))}
